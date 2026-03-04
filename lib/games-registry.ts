@@ -67,17 +67,6 @@ export const GAMES: Game[] = [
     available: true,
   },
   {
-    slug: "solitaire",
-    title: "Solitaire",
-    titleEn: "Solitaire",
-    description: "Klondike Solitaire — the classic Windows XP card game.",
-    longDescription: "Coming soon!",
-    emoji: "🃏",
-    category: "card",
-    keywords: ["solitaire", "cards", "klondike", "windows xp"],
-    available: false,
-  },
-  {
     slug: "pinball",
     title: "Space Pinball",
     titleEn: "Space Cadet Pinball",
@@ -87,6 +76,17 @@ export const GAMES: Game[] = [
     category: "arcade",
     keywords: ["pinball", "space cadet", "windows xp", "3d pinball", "webassembly"],
     available: true,   // ← змінити з false на true
+  },
+  {
+    slug: "solitaire",
+    title: "Solitaire",
+    titleEn: "Solitaire",
+    description: "Klondike Solitaire — the classic Windows XP card game.",
+    longDescription: "Coming soon!",
+    emoji: "🃏",
+    category: "card",
+    keywords: ["solitaire", "cards", "klondike", "windows xp"],
+    available: false,
   },
 ];
 
