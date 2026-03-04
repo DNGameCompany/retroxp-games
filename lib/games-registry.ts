@@ -88,17 +88,6 @@ export const GAMES: Game[] = [
     keywords: ["pinball", "space cadet", "windows xp", "3d pinball", "webassembly"],
     available: true,   // ← змінити з false на true
   },
-  {
-    slug: "wolfenstein",
-    title: "Wolfenstein 3D",
-    titleEn: "Wolfenstein 3D",
-    description: "The grandfather of FPS games — running via DOS emulator!",
-    longDescription: "id Software's 1992 classic that invented the first-person shooter genre. Play shareware episodes 1–3 free. Escape from Castle Wolfenstein, fight Nazi soldiers, and defeat Boss enemies.",
-    emoji: "🐺",
-    category: "arcade",
-    keywords: ["wolfenstein", "fps", "shooter", "dos", "id software", "retro", "3d", "1992"],
-    available: true,
-  },
 ];
 
 export function getGame(slug: string): Game | undefined {
