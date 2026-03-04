@@ -1,0 +1,23 @@
+:root {
+  --xp-silver: #ece9d8;
+  --xp-gray: #d4d0c8;
+  --xp-btn: #d4d0c8;
+  --xp-titlebar1: #0831d9;
+  --xp-titlebar2: #1f86e8;
+  --xp-taskbar1: #245edc;
+  --xp-taskbar2: #3a93ff;
+  --xp-green-desktop: #008140;
+  --xp-border: #aca899;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Tahoma', 'Segoe UI', sans-serif;
+  background: var(--xp-green-desktop);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+::-webkit-scrollbar { width: 14px; height: 14px; }
+::-webkit-scrollbar-track { background: #ece9d8; border: 1px solid #aca899; }
+::-webkit-scrollbar-thumb { background: linear-gradient(to right, #d0ccc0, #bcb9b0); border: 1px solid #888; }
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(to right, #b0aca4, #a8a49c); }
