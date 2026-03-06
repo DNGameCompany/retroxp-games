@@ -46,17 +46,6 @@ export const GAMES: Game[] = [
     available: true,
   },
   {
-    slug: "breakout",
-    title: "Breakout",
-    titleEn: "Breakout",
-    description: "Smash all the bricks with your ball and paddle!",
-    longDescription: "Classic Breakout arcade game. Control your paddle to keep the ball bouncing and destroy all the bricks. Don't let the ball fall! Clear each level to advance.",
-    emoji: "🧱",
-    category: "arcade",
-    keywords: ["breakout", "brick breaker", "arcade", "retro breakout"],
-    available: true,
-  },
-  {
     slug: "pong",
     title: "Pong",
     titleEn: "Pong",

@@ -16,7 +16,6 @@ import HomeContent from "../games/HomeContent";
 import Minesweeper from "../games/Minesweeper";
 import Snake from "../games/Snake";
 import Tetris from "../games/Tetris";
-import Breakout from "../games/Breakout";
 import Pong from "../games/Pong";
 import Pinball from "../games/Pinball";
 // ── Card games ──────────────────────────────────────────────────────────────
@@ -222,7 +221,6 @@ export default function XPDesktopClient({ games, initialGame }: Props) {
     if (id === "minesweeper")  return <Minesweeper  onAchievement={handleAchievement} onGameOver={handleGameOver("minesweeper")} />;
     if (id === "snake")        return <Snake        onAchievement={handleAchievement} onGameOver={handleGameOver("snake")} />;
     if (id === "tetris")       return <Tetris       onAchievement={handleAchievement} onGameOver={handleGameOver("tetris")} />;
-    if (id === "breakout")     return <Breakout     onAchievement={handleAchievement} onGameOver={handleGameOver("breakout")} />;
     if (id === "pong")         return <Pong         onAchievement={handleAchievement} onGameOver={handleGameOver("pong")} />;
     if (id === "pinball")      return <Pinball />;
 

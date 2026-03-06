@@ -26,11 +26,6 @@ export const ACHIEVEMENTS: Achievement[] = [
     { id: "tt_level5",   emoji: "🚀", title: "Level 5",             desc: "Reach level 5 in Tetris" },
     { id: "tt_level10",  emoji: "💎", title: "Grand Master",        desc: "Reach level 10 in Tetris", secret: true },
 
-    // ── Breakout ──────────────────────────────────────────────
-    { id: "br_first",    emoji: "🧱", title: "Brick Breaker",       desc: "Complete level 1 in Breakout" },
-    { id: "br_level3",   emoji: "💥", title: "Demolisher",          desc: "Reach level 3 in Breakout" },
-    { id: "br_nodrop",   emoji: "🎯", title: "Perfect Round",       desc: "Complete a Breakout level without losing a ball" },
-
     // ── Pong ──────────────────────────────────────────────────
     { id: "pn_win",      emoji: "🏓", title: "Pong Master",         desc: "Beat the CPU in Pong" },
     { id: "pn_shutout",  emoji: "🥇", title: "Shutout",             desc: "Win Pong 7-0", secret: true },
