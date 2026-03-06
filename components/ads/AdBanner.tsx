@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Props {
   slot: string;
@@ -10,48 +10,57 @@ interface Props {
 const CLIENT_ID = process.env.NEXT_PUBLIC_ADSENSE_ID;
 
 export default function AdBanner({ slot, format = "auto", style }: Props) {
-  const [filled, setFilled] = useState(false);
+  const [show, setShow] = useState(false);
+  const insRef = useRef<HTMLModElement>(null);
+  const pushed = useRef(false);
 
   useEffect(() => {
+    // Не показуємо якщо немає AdSense ID
     if (!CLIENT_ID) return;
-
     // Не показуємо на localhost
     if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") return;
 
-    try {
-      ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
-    } catch {}
+    // Показуємо контейнер щоб AdSense міг його заповнити
+    setShow(true);
 
-    // Перевіряємо чи AdSense заповнив блок через 2 секунди
+    // Push тільки один раз
+    if (!pushed.current) {
+      pushed.current = true;
+      try {
+        ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+      } catch {}
+    }
+
+    // Перевіряємо через 2.5с чи блок дійсно заповнений
+    // Якщо ні — ховаємо щоб не займав місце
     const timer = setTimeout(() => {
-      const ins = document.querySelector(`ins[data-ad-slot="${slot}"]`);
-      const status = ins?.getAttribute("data-ad-status");
-      if (status === "filled") setFilled(true);
-    }, 2000);
+      const ins = insRef.current;
+      if (!ins) return;
+      const status = ins.getAttribute("data-ad-status");
+      if (status !== "filled") {
+        setShow(false);
+      }
+    }, 2500);
 
     return () => clearTimeout(timer);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // На localhost або якщо не заповнено — не рендеримо нічого
-  if (!CLIENT_ID) return null;
-  if (typeof window !== "undefined" &&
-    (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")) {
-    return null;
-  }
+  // Не рендеримо взагалі якщо немає ID або ще не show
+  if (!CLIENT_ID || !show) return null;
 
   return (
-    <ins
-      className="adsbygoogle"
-      style={{
-        display: "block",
-        minHeight: filled ? undefined : 0,
-        overflow: "hidden",
-        ...style,
-      }}
-      data-ad-client={CLIENT_ID}
-      data-ad-slot={slot}
-      data-ad-format={format}
-      data-full-width-responsive="true"
-    />
+      <ins
+          ref={insRef}
+          className="adsbygoogle"
+          style={{
+            display: "block",
+            overflow: "hidden",
+            ...style,
+          }}
+          data-ad-client={CLIENT_ID}
+          data-ad-slot={slot}
+          data-ad-format={format}
+          data-full-width-responsive="true"
+      />
   );
 }
