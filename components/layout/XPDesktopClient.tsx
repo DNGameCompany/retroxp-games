@@ -26,6 +26,7 @@ import LeaderboardWindow from "../windows/LeaderboardWindow";
 import AchievementsWindow from "../windows/AchievementsWindow";
 import DailyWindow from "../windows/DailyWindow";
 import {trackGameOpen} from "@/lib/analytics";
+import Durak from "@/components/games/Durak";
 
 export interface WinState {
   id: string; title: string; emoji: string;
@@ -45,14 +46,11 @@ const WIN_SIZES: Record<string, [number, number]> = {
   minesweeper: [380, 490],
   snake:       [420, 480],
   tetris:      [360, 520],
-  breakout:    [540, 440],
   pong:        [540, 400],
   pinball:     [720, 560],
   // card games
   solitaire:   [520, 560],
-  spider:      [580, 560],
-  pyramid:     [460, 540],
-  blackjack:   [420, 460],
+  durak: [560, 560],
 };
 
 export default function XPDesktopClient({ games, initialGame }: Props) {
@@ -226,6 +224,8 @@ export default function XPDesktopClient({ games, initialGame }: Props) {
 
     // ── Card games ──────────────────────────────────────────────────────────
     if (id === "solitaire")    return <Solitaire    onAchievement={handleAchievement} onGameOver={handleGameOver("solitaire")} />;
+    if (id === "durak") return <Durak onAchievement={handleAchievement} onGameOver={handleGameOver("durak")} />;
+
 
     // Special windows (unchanged)
     if (id === "profile")      return <ProfileWindow />;

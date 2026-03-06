@@ -80,6 +80,17 @@ export const GAMES: Game[] = [
     keywords: ["solitaire", "klondike solitaire", "card game", "solitaire online free", "windows xp solitaire"],
     available: true,
   },
+  {
+    slug: "durak",
+    title: "Дурак",
+    titleEn: "Durak",
+    description: "Класична карткова гра Дурак проти AI. Позбудься карт першим!",
+    longDescription: "Дурак — найпопулярніша карткова гра в Україні та СНД. Грай проти AI з 36-картковою колодою. Атакуй, відбивайся козирями, підкидай карти — і не залишись з картами в кінці! Повні правила, красивий інтерфейс, система досягнень.",
+    emoji: "🃏",
+    category: "card",
+    keywords: ["дурак онлайн", "карткова гра дурак", "durak online", "грати в дурака", "дурак браузер"],
+    available: true,
+  },
 ];
 
 export function getGame(slug: string): Game | undefined {

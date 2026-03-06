@@ -36,6 +36,15 @@ export const ACHIEVEMENTS: Achievement[] = [
     { id: "sl_under50",  emoji: "🎯", title: "Efficient",           desc: "Win Solitaire in under 50 moves" },
     { id: "sl_10wins",   emoji: "👑", title: "Solitaire King",      desc: "Win Solitaire 10 times", secret: true },
 
+    // ── Durak ──────────────────────────────────────────────────
+    { id:"dk_first_win", emoji:"🃏", title:"Не Дурак",      desc:"Виграй першу партію в Дурака" },
+    { id:"dk_win",       emoji:"🏆", title:"Майстер Дурака", desc:"Виграй партію в Дурака" },
+    { id:"dk_5wins",     emoji:"👑", title:"Непереможний",   desc:"Виграй 5 партій поспіль", secret:true },
+    { id:"dk_defend",    emoji:"🛡️", title:"Залізний захист",desc:"Відбийся від усіх атак за раунд" },
+    { id:"dk_take",      emoji:"📥", title:"Береженого...",  desc:"Взяти карти іноді мудріше" },
+    { id:"dk_pass",      emoji:"✅", title:"Тактик",         desc:"Передай хід після успішної атаки" },
+    { id:"dk_draw",      emoji:"🤝", title:"Мирна угода",    desc:"Зіграй внічию" },
+
     // ── General ───────────────────────────────────────────────
     { id: "g_all5",      emoji: "🎮", title: "Gamer",               desc: "Play all 5 classic games at least once" },
     { id: "g_allcards",  emoji: "🃏", title: "Card Shark",          desc: "Play all 4 card games at least once" },
