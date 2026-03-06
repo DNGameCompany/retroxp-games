@@ -1,57 +1,105 @@
-import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { GAMES, getGame } from "@/lib/games-registry";
 import XPDesktopClient from "@/components/layout/XPDesktopClient";
 
-interface Props { params: { slug: string } }
+const SITE = process.env.NEXT_PUBLIC_SITE_URL || "https://retroxp.games";
 
+// ── Static params ─────────────────────────────────────────────
 export async function generateStaticParams() {
-  return GAMES.map((g) => ({ slug: g.slug }));
+  return GAMES.filter(g => g.available).map(g => ({ slug: g.slug }));
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const g = getGame(params.slug);
-  if (!g) return { title: "Гру не знайдено" };
-  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://retroxp.games";
+// ── Per-game metadata ─────────────────────────────────────────
+export async function generateMetadata(
+    { params }: { params: { slug: string } }
+): Promise<Metadata> {
+  const game = getGame(params.slug);
+  if (!game) return {};
+
+  const url = `${SITE}/games/${game.slug}`;
+  const title = `${game.title} — Грати онлайн безкоштовно`;
+  const desc = game.longDescription.slice(0, 160);
+
   return {
-    title: `${g.title} — ${g.titleEn} онлайн безкоштовно`,
-    description: g.longDescription,
-    keywords: g.keywords,
-    alternates: { canonical: `/games/${g.slug}` },
+    title,
+    description: desc,
+    keywords: game.keywords,
+    alternates: { canonical: url },
     openGraph: {
-      title: `${g.title} — Грай онлайн | RetroXP Games`,
-      description: g.description,
-      url: `${base}/games/${g.slug}`,
-      images: [{ url: `/og/${g.slug}.png`, width: 1200, height: 630 }],
+      type: "website",
+      url,
+      title,
+      description: desc,
+      siteName: "RetroXP Games",
+      locale: "uk_UA",
+      images: [{ url: `/og/${game.slug}.png`, width: 1200, height: 630, alt: game.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: desc,
+      images: [`/og/${game.slug}.png`],
     },
   };
 }
 
-function GameJsonLd({ slug }: { slug: string }) {
-  const g = getGame(slug);
-  if (!g) return null;
-  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://retroxp.games";
-  const schema = {
-    "@context": "https://schema.org", "@type": "VideoGame",
-    name: g.title, alternateName: g.titleEn,
-    description: g.longDescription, url: `${base}/games/${g.slug}`,
-    applicationCategory: "Game", operatingSystem: "Web Browser",
-    offers: { "@type": "Offer", price: "0", priceCurrency: "UAH" },
-    genre: g.category,
-  };
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
-}
+// ── Page component ────────────────────────────────────────────
+export default function GamePage({ params }: { params: { slug: string } }) {
+  const game = getGame(params.slug);
+  if (!game || !game.available) notFound();
 
-export default function GamePage({ params }: Props) {
-  const g = getGame(params.slug);
-  if (!g) notFound();
+  // JSON-LD for this specific game
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": game.title,
+    "description": game.longDescription,
+    "url": `${SITE}/games/${game.slug}`,
+    "genre": game.category,
+    "gamePlatform": "Web Browser",
+    "applicationCategory": "Game",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "RetroXP Games",
+      "url": SITE,
+    },
+    "inLanguage": "uk",
+  };
+
+  // Breadcrumb JSON-LD
+  const breadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "RetroXP Games", "item": SITE },
+      { "@type": "ListItem", "position": 2, "name": game.title, "item": `${SITE}/games/${game.slug}` },
+    ],
+  };
+
   return (
-    <>
-      <GameJsonLd slug={params.slug} />
-      <h1 style={{ position:"absolute", width:1, height:1, overflow:"hidden", clip:"rect(0,0,0,0)" }}>
-        {g.title} — грай онлайн безкоштовно
-      </h1>
-      <XPDesktopClient games={GAMES} initialGame={params.slug} />
-    </>
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+
+        {/* Hidden SEO content — visible to crawlers, not to users */}
+        <div style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", opacity: 0, pointerEvents: "none" }}>
+          <h1>{game.title} — грати онлайн безкоштовно</h1>
+          <p>{game.longDescription}</p>
+          <nav aria-label="breadcrumb">
+            <a href={SITE}>RetroXP Games</a> › <span>{game.title}</span>
+          </nav>
+        </div>
+
+        {/* The actual XP desktop — opens this game immediately */}
+        <XPDesktopClient games={GAMES} initialGame={game.slug} />
+      </>
   );
 }

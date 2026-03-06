@@ -1,8 +1,17 @@
-import type { MetadataRoute } from "next";
+import { MetadataRoute } from "next";
+
+const SITE = process.env.NEXT_PUBLIC_SITE_URL || "https://retroxp.games";
+
 export default function robots(): MetadataRoute.Robots {
-  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://retroxp.games";
   return {
-    rules: { userAgent: "*", allow: "/" },
-    sitemap: `${base}/sitemap.xml`,
+    rules: [
+      {
+        userAgent: "*",
+        allow: "/",
+        disallow: ["/api/", "/_next/"],
+      },
+    ],
+    sitemap: `${SITE}/sitemap.xml`,
+    host: SITE,
   };
 }
