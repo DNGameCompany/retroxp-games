@@ -12,9 +12,10 @@ export async function generateStaticParams() {
 
 // ── Per-game metadata ─────────────────────────────────────────
 export async function generateMetadata(
-    { params }: { params: { slug: string } }
+    { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
-  const game = getGame(params.slug);
+  const { slug } = await params;
+  const game = getGame(slug);
   if (!game) return {};
 
   const url = `${SITE}/games/${game.slug}`;
@@ -45,11 +46,13 @@ export async function generateMetadata(
 }
 
 // ── Page component ────────────────────────────────────────────
-export default function GamePage({ params }: { params: { slug: string } }) {
-  const game = getGame(params.slug);
+export default async function GamePage(
+    { params }: { params: Promise<{ slug: string }> }
+) {
+  const { slug } = await params;
+  const game = getGame(slug);
   if (!game || !game.available) notFound();
 
-  // JSON-LD for this specific game
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "VideoGame",
@@ -74,7 +77,6 @@ export default function GamePage({ params }: { params: { slug: string } }) {
     "inLanguage": "uk",
   };
 
-  // Breadcrumb JSON-LD
   const breadcrumb = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -89,8 +91,7 @@ export default function GamePage({ params }: { params: { slug: string } }) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
 
-        {/* Hidden SEO content — visible to crawlers, not to users */}
-        <div style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", opacity: 0, pointerEvents: "none" }}>
+        <div style={{ position:"absolute", width:1, height:1, overflow:"hidden", opacity:0, pointerEvents:"none" }}>
           <h1>{game.title} — грати онлайн безкоштовно</h1>
           <p>{game.longDescription}</p>
           <nav aria-label="breadcrumb">
@@ -98,7 +99,6 @@ export default function GamePage({ params }: { params: { slug: string } }) {
           </nav>
         </div>
 
-        {/* The actual XP desktop — opens this game immediately */}
         <XPDesktopClient games={GAMES} initialGame={game.slug} />
       </>
   );
