@@ -26,6 +26,7 @@ import ProfileWindow from "../windows/ProfileWindow";
 import LeaderboardWindow from "../windows/LeaderboardWindow";
 import AchievementsWindow from "../windows/AchievementsWindow";
 import DailyWindow from "../windows/DailyWindow";
+import {trackGameOpen} from "@/lib/analytics";
 
 export interface WinState {
   id: string; title: string; emoji: string;
@@ -148,6 +149,7 @@ export default function XPDesktopClient({ games, initialGame }: Props) {
 
   const openGame = useCallback((slug: string) => {
     const g = games.find(x => x.slug === slug);
+    trackGameOpen(slug)
     if (!g) return;
     if (!g.available) { alert(`🚧 ${g.title} — coming soon!`); return; }
     const [w, h] = WIN_SIZES[slug] || [480, 500];
